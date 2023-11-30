@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   padding: 1rem 10%;
   height: 5rem;
   background-color: #202020;
@@ -24,11 +24,17 @@
   color: #94fdfd;
 }
 
-.navigation a {
+.navigation button {
   text-decoration: none;
-  color: #74dacc;
   font-size: 1rem;
+  transition: color 0.3s ease, background-color 0.3s ease; 
 }
+
+.navigation button:hover {
+  color: #fff; 
+  background-color: #74dacc; 
+}
+
 
 @media (min-width: 768px) {
   .logo {

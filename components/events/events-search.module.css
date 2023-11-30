@@ -21,6 +21,7 @@
 
 .control {
   flex: 1;
+  width: 100%;
   display: flex;
   gap: 1rem;
   align-items: center;
@@ -40,7 +41,7 @@
 }
 
 .form button {
-  width: 100%;
+  width: 50%;
   font: inherit;
   padding: 0.25rem 0.5rem;
   background-color: #03be9f;
