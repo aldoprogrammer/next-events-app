@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import classes from "./events-search.module.css";
+import Button from "../ui/Button";
 
 function EventSearch(props: {
   onSearch: (year: number, month: number) => void;
@@ -45,6 +46,10 @@ function EventSearch(props: {
             </select>
           </div>
           <button>Search</button>
+          {/* <Button 
+            title="Search" 
+            onClick={() => {}} /> */}
+
         </div>
       </form>
     </>
