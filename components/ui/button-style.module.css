@@ -16,7 +16,7 @@
     display: inline-flex;
     flex: 1 1 auto;
     text-align: center;
-    margin: 2rem auto; /* Center the button horizontally */
+    margin: 2rem auto; 
     font-family: Inter, sans-serif;
     font-size: 1.2rem;
     font-weight: 700;

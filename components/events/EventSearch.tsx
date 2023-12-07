@@ -48,7 +48,9 @@ function EventSearch(props: {
           <button>Search</button>
           {/* <Button 
             title="Search" 
-            onClick={() => {}} /> */}
+            onClick={() => {}}
+            
+            /> */}
 
         </div>
       </form>
