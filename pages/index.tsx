@@ -2,7 +2,7 @@ import EventList from "@/components/events/EventList";
 
 // import { featuredEvents } from "@/providers/EventRepository";
 
-import { allEvents } from "@/providers/EventMongoRepository";
+import { allEvents } from "@/providers/EventDBRepository";
 import { useEffect, useState } from "react";
 
 function Home() {

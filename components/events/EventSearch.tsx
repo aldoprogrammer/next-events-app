@@ -2,23 +2,40 @@ import React, { useRef } from "react";
 import classes from "./events-search.module.css";
 
 function EventSearch(props: {
-  onSearch: (year: number, month: number) => void;
+  onSearch: (year: number, month: number, searchQuery?: string) => void;
+  onSearchByIdTitleLoc: (searchQuery: string) => void; 
 }) {
   const yearRef = useRef<HTMLSelectElement>(null);
   const monthRef = useRef<HTMLSelectElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   function submitHandler(event: React.FormEvent<any>) {
+  event.preventDefault();
+
+  const selectedYear = yearRef.current?.value || 0;
+  const selectedMonth = monthRef.current?.value || 0;
+  const searchQuery = searchRef.current?.value || "";
+
+  if (searchQuery.trim() === "") {
+    // If the search query is empty, trigger onSearch to reset the search
+    props.onSearch(+selectedYear, +selectedMonth);
+  } else {
+    // Otherwise, trigger onSearchByIdTitleLoc with the search query
+    props.onSearchByIdTitleLoc(searchQuery);
+  }
+}
+
+
+  function searchIdHandler(event: React.FormEvent<any>) {
     event.preventDefault();
 
-    const selectedYear = yearRef.current?.value || 0;
-    const selectedMonth = monthRef.current?.value || 0;
-
-    props.onSearch(+selectedYear, +selectedMonth);
+    const searchQuery = searchRef.current?.value || "";
+    props.onSearchByIdTitleLoc(searchQuery);
   }
 
   return (
     <>
-      <form className={classes.form} onSubmit={submitHandler}>
+      {/* <form className={classes.form} onSubmit={submitHandler}>
         <div className={classes.controls}>
           <div className={classes.control}>
             <label htmlFor="year">Year</label>
@@ -44,6 +61,17 @@ function EventSearch(props: {
               <option value="12">December</option>
             </select>
           </div>
+          <button>Search</button>
+        </div>
+       
+      </form> */}
+      <form className={classes.form} onSubmit={searchIdHandler}>
+        <div className={classes.control}>
+          <input
+            type="text"
+            placeholder="Search by ID, title, or location & date"
+            ref={searchRef}
+          />
           <button>Search</button>
         </div>
       </form>

@@ -11,11 +11,11 @@ function EventItem(props: {
 }) {
   const { id, image, title, date, location } = props;
 
-  const humanReadableDate = new Date(date).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const eventDate = new Date(date);
+  const month = eventDate.toLocaleString("en-US", { month: "long" });
+  const day = eventDate.toLocaleString("en-US", { day: "numeric" });
+  const year = eventDate.getFullYear();
+  const humanReadableDate = `${month}  ${day}, ${year}`;
 
   const formattedAddress = location.replace(", ", "\n");
   const exploreLink = `/events/${id}`;
@@ -28,7 +28,7 @@ function EventItem(props: {
           <h2>{title}</h2>
         </div>
         <div>
-          <time>{date}</time>
+        <time>{humanReadableDate}</time>
         </div>
         <div>
           <address>{location}</address>

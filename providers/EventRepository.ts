@@ -20,3 +20,5 @@ export function featuredEvents(): Event[] {
 export function getEventById(id: string): Event | undefined {
   return data.find((event) => event.id === id);
 }
+
+
