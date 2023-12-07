@@ -1,6 +1,7 @@
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import Button from "../ui/Button";
 import classes from "./event-item.module.css";
+import { formatHumanReadableDate } from "@/components/utils/dateReadable";
 
 function EventItem(props: {
   id: string;
@@ -11,11 +12,8 @@ function EventItem(props: {
 }) {
   const { id, image, title, date, location } = props;
 
-  const eventDate = new Date(date);
-  const month = eventDate.toLocaleString("en-US", { month: "long" });
-  const day = eventDate.toLocaleString("en-US", { day: "numeric" });
-  const year = eventDate.getFullYear();
-  const humanReadableDate = `${month}  ${day}, ${year}`;
+  
+  const humanReadableDate = formatHumanReadableDate(date);  
 
   const formattedAddress = location.replace(", ", "\n");
   const exploreLink = `/events/${id}`;
