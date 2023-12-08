@@ -5,6 +5,8 @@ import { allEvents } from "@/providers/EventDBRepository";
 import { useRouter } from "next/router";
 import { formatHumanReadableDate } from "@/components/utils/dateReadable";
 import classes from "@/pages/events/events-newSearch.module.css";
+import Button from "@/components/ui/Button";
+
 
 interface EventProps {
   id: string;
@@ -60,9 +62,20 @@ function AllEventsPage() {
     setNoResults(filteredEvents.length === 0);
   };
 
+  const addEventForm = `/events/add-event`;
+
+
   return (
     <>
       <EventSearch onSearch={findEventHandler} onSearchByIdTitleLoc={searchByIdTitleLocHandler} />
+      <div className={classes.h2}>
+      <Button link={addEventForm}
+      >
+          <span >
+            Add Event
+          </span>
+        </Button>
+        </div>
       {searchQuery && <h2 className={classes.h2}>Search results for: {searchQuery}</h2>}
       
       {noResults ? (
