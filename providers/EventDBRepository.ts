@@ -1,5 +1,6 @@
-import { Event } from "@/models/Event";
 import axios from "axios";
+import { API_MONGODB_URL, API_POSTGRESTDB_URL } from "@/config";
+import { Event } from "@/models/Event";
 
 interface AllEventsParams {
   year?: number;
@@ -14,17 +15,15 @@ export async function allEvents({
 }: AllEventsParams = {}): Promise<Event[]> {
   const queryParams = new URLSearchParams();
 
-  if (year !== undefined) {
-    queryParams.set("year", year.toString());
-  }
-  if (month !== undefined) {
-    queryParams.set("month", month.toString());
-  }
-  if (searchQuery) {
-    queryParams.set("searchQuery", searchQuery);
-  }
+  
+  const connectDb: string = "mongo"; // Set your condition here, e.g., process.env.DBConnect_ENV
 
-  const url = `http://localhost:3000/api/events?${queryParams.toString()}`;
+  // Choose the appropriate URL based on the condition
+  const url =
+    connectDb === "mongo"
+      ? `${API_MONGODB_URL}/events`
+      : `${API_POSTGRESTDB_URL}/events`;
+
   const response = await axios.get(url);
 
   console.log(JSON.stringify(response.data, null, 2));
