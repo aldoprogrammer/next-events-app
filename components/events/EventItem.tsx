@@ -4,22 +4,22 @@ import classes from "./event-item.module.css";
 import { formatHumanReadableDate } from "@/components/utils/dateReadable";
 
 function EventItem(props: {
-  id: string;
+  _id: string;
   image: string;
   title: string;
   date: string;
   location: string;
 }) {
-  const { id, image, title, date, location } = props;
+  const { _id, image, title, date, location } = props;
 
   
   const humanReadableDate = formatHumanReadableDate(date);  
 
   const formattedAddress = location.replace(", ", "\n");
-  const exploreLink = `/events/${id}`;
+  const exploreLink = `/events/${_id}`;
 
   return (
-    <li key={id} className={classes.item}>
+    <li key={_id} className={classes.item}>
       <img src={"/" + image} alt="" className={classes.item} />
       <div>
         <div>
