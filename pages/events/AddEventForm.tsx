@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import classes from "@/pages/events/add-event.module.css";
 import axios from "axios";
 import { API_MONGODB_URL } from "@/config";
+import { useRouter } from "next/router";
 
 const AddEventForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -9,48 +10,62 @@ const AddEventForm: React.FC = () => {
   const [desc, setDesc] = useState("");
   const [loc, setLoc] = useState("");
   const [date, setDate] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState<File | null>(null); // Track the selected file
+  const router = useRouter();
 
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  
-    // Create a FormData object
-    const formData = new FormData(event.currentTarget);
-  
-    // Set additional form data
-    formData.set("title", title);
-    formData.set("desc", desc);
-    formData.set("loc", loc);
-    formData.set("date", date);
-    formData.set("image", image);
-  
-    // Log the form data before sending the request
-    console.log("Form Data:", formData);
-  
-    try {
-      setLoading(true);
-  
-      // Send POST request to your MongoDB API endpoint
-      const response = await axios.post(`${API_MONGODB_URL}/events`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-  
-      console.log("Event added successfully:", response.data);
-  
-      // Reset the form or navigate to another page if needed
-      setTitle("");
-      setDesc("");
-      setLoc("");
-      setDate("");
-      setImage("");
-    } catch (error) {
-      console.error("Error adding event:", error);
-    } finally {
-      setLoading(false);
-    }
+  const [post, setPost] = useState({
+    title: '',
+    description: '',
+    location: '',
+    date: '',
+    image: '',
+    isFeatured: true,
+  });
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setPost({ ...post, [event.target.name]: event.target.value });
   };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // Get the first file selected by the user
+    const file = event.target.files?.[0];
+    setImage(file);
+  };
+
+  async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    try {
+      // Check if an image is selected
+      if (image) {
+        // Use FormData to send a file in the request
+        const formData = new FormData();
+        formData.append("image", image);
+
+        // Upload the image
+        const uploadResponse = await axios.post('public/images', formData);
+
+        // Use the URL of the uploaded image in your post data
+        setPost({ ...post, image: uploadResponse.data.url });
+      }
+
+      // Now you can proceed with the rest of your data
+      const response = await axios.post(`${API_MONGODB_URL}/events`, post);
+
+      if (response.status === 200 || response.status === 201) {
+        // Data creation successful
+        console.log('Data created successfully:', response.data);
+        alert('New Event Created');
+        router.push('/events');
+      } else {
+        // Data creation failed
+        throw new Error('Failed to create data');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   
 
   return (
@@ -63,17 +78,15 @@ const AddEventForm: React.FC = () => {
             className={classes.input}
             type="text"
             name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleInput}
           />
         </label>
         <label className="label">
           Description:
           <textarea
             className={classes.textarea}
-            name="desc"
-            value={desc}
-            onChange={(e) => setDesc(e.target.value)}
+            name="description"
+            onChange={handleInput}
           />
         </label>
         <label className="label">
@@ -81,19 +94,17 @@ const AddEventForm: React.FC = () => {
           <input
             className={classes.input}
             type="text"
-            name="loc"
-            value={loc}
-            onChange={(e) => setLoc(e.target.value)}
+            name="location"
+            onChange={handleInput}
           />
         </label>
         <label className="label">
           Date:
           <input
             className={classes.input}
-            type="text"
+            type="date"
             name="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={handleInput}
           />
         </label>
         <label className="label">
@@ -102,7 +113,7 @@ const AddEventForm: React.FC = () => {
             className={classes.input}
             type="file"
             name="image"
-            onChange={(e) => setImage(e.target.value)}
+            onChange={handleImageChange}
           />
         </label>
         <button className={classes.button} type="submit">

@@ -9,7 +9,7 @@ import Button from "@/components/ui/Button";
 
 
 interface EventProps {
-  id: string;
+  _id: string;
   title: string;
   location: string;
   date: string;
@@ -45,13 +45,13 @@ function AllEventsPage() {
     await fetchEvents();
 
     const filteredEvents = events.filter((event) => {
-      const { id, title, location, date } = event;
+      const { _id, title, location, date } = event;
       const lowerCaseQuery = query.toLowerCase();
       const formattedDate = formatHumanReadableDate(date);
 
       // Check if the query matches title, location, id, or formatted date
       return (
-        id.toLowerCase().includes(lowerCaseQuery) ||
+        _id.toLowerCase().includes(lowerCaseQuery) ||
         title.toLowerCase().includes(lowerCaseQuery) ||
         location.toLowerCase().includes(lowerCaseQuery) ||
         formattedDate.toLowerCase().includes(lowerCaseQuery)
