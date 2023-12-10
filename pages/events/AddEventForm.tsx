@@ -27,7 +27,7 @@ const AddEventForm: React.FC = () => {
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Get the first file selected by the user
+    
     const file = event.target.files?.[0];
     setImage(file);
   };
@@ -36,29 +36,29 @@ const AddEventForm: React.FC = () => {
     event.preventDefault();
 
     try {
-      // Check if an image is selected
+    
       if (image) {
-        // Use FormData to send a file in the request
+    
         const formData = new FormData();
         formData.append("image", image);
 
-        // Upload the image
+    
         const uploadResponse = await axios.post('public/images', formData);
 
-        // Use the URL of the uploaded image in your post data
+    
         setPost({ ...post, image: uploadResponse.data.url });
       }
 
-      // Now you can proceed with the rest of your data
+    
       const response = await axios.post(`${API_MONGODB_URL}/events`, post);
 
       if (response.status === 200 || response.status === 201) {
-        // Data creation successful
+    
         console.log('Data created successfully:', response.data);
         alert('New Event Created');
         router.push('/events');
       } else {
-        // Data creation failed
+    
         throw new Error('Failed to create data');
       }
     } catch (error) {
